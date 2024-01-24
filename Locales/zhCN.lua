@@ -538,12 +538,6 @@ L["Tooltips need to be enabled in General tab"] = "需要先启用常规页面�
 L["Added |T%d:0|t|cFFFF3030%s(%d)|r into debuff blacklist."] = "已将 |T%d:0|t|cFFFF3030%s(%d)|r 添加至减益黑名单。"
 L["enableBlacklistShortcut"] = "黑名单：Alt+Ctrl+RightClick"
 L["Only one threshold is displayed at a time"] = "同一时间只显示一个阈值"
---[[Translation missing --]]
--- L["Healer"] = "Healer"
---[[Translation missing --]]
--- L["Tank"] = "Tank"
---[[Translation missing --]]
--- L["Damager"] = "DPS"
 L["hideDamager"] = "隐藏伤害输出"
 L["hideInCombat"] = "战斗中隐藏"
 L["fadeOut"] = "随时间淡出"

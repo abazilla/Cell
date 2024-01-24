@@ -1228,7 +1228,7 @@ end
 -------------------------------------------------
 local autoSwitchFrame
 local typeSwitch, currentProfileBox
-local layoutDropdown, sortByRoleDropdown, partyDropdown, raidOutdoorDropdown, raidInstanceDropdown, raidMythicDropdown, arenaDropdown, bg15Dropdown, bg40Dropdown
+local layoutDropdown, partyDropdown, raidOutdoorDropdown, raidInstanceDropdown, raidMythicDropdown, arenaDropdown, bg15Dropdown, bg40Dropdown
 local raid10Dropdown, raid25Dropdown -- wrath
 local bgDropdown -- vanilla
 local LoadLayoutDropdown, LoadAutoSwitchDropdowns
@@ -2357,7 +2357,7 @@ local function CreateLayoutSetupPane()
         selectedLayoutTable["main"]["hideSelf"] = checked
         Cell:Fire("UpdateLayout", selectedLayout, "hideSelf")
     end)
-    hideSelfCB:SetPoint("RIGHT", sortByRoleCB, "LEFT", 220, 0)
+    hideSelfCB:SetPoint("TOPLEFT", sortByRoleCB, "BOTTOMLEFT", 0, -8)
 
     -- rows/columns
     rcSlider = Cell:CreateSlider("", pages.main, 1, 8, 117, 1, function(value)
@@ -2556,7 +2556,7 @@ local function CreateLayoutSetupPane()
         if tab == "main" then
             sameSizeAsMainCB:Hide()
             sameArrangementAsMainCB:Hide()
-            widthSlider:SetPoint("TOPLEFT", sortByRoleDropdown, -20, -50)
+            widthSlider:SetPoint("TOPLEFT", hideSelfCB, 0, -50)
         else
             sameSizeAsMainCB:Show()
             sameArrangementAsMainCB:Show()
@@ -2726,9 +2726,6 @@ LoadLayoutDB = function(layout, dontShowPreview)
     selectedLayoutTable = CellDB["layouts"][layout]
 
     layoutDropdown:SetSelectedValue(selectedLayout)
-
-    sortByRoleDropdown:SetEnabled(selectedLayoutTable["main"]["sortByRole"])
-    sortByRoleDropdown:SetSelectedValue(selectedLayoutTable["main"]["sortByRoleOrder"])
 
     if selectedLayoutTable["main"]["orientation"] == "vertical" then
         rcSlider:SetLabel(L["Group Columns"])
