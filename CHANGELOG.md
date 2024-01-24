@@ -1,5 +1,4 @@
-[Full Changelog](https://github.com/enderneko/Cell/compare/r213-release...3a434975181729091a9c3a579a9269d19f9e2890)
+[Full Changelog](https://github.com/enderneko/Cell/compare/r218-release...3d86541b80b9d875029e24587caa516dbe43fa70)
 
-- Fix Spell Request
-- Update the priority of dispel types
-- Update zhTW
+- Fix range check on Quick Assist
+- Implement custom gradient colors

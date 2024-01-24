@@ -401,6 +401,7 @@ local function QuickAssist_UpdateTarget(self)
     end
 end
 
+-- FIXME: BLIZZARD, IT'S BUGGY!
 -- UNIT_IN_RANGE_UPDATE: unit, inRange
 local function QuickAssist_UpdateInRange(self, ir)
     if not self.unit then return end
@@ -409,6 +410,24 @@ local function QuickAssist_UpdateInRange(self, ir)
         A:FrameFadeIn(self, 0.25, self:GetAlpha(), 1)
     else
         A:FrameFadeOut(self, 0.25, self:GetAlpha(), styleTable["oorAlpha"] or 0.25)
+    end
+end
+
+local function QuickAssist_UpdateInRange_OnTick(self)
+    if not self.unit then return end
+
+    local inRange = F:IsInRange(self.unit)
+
+    self.inRange = inRange
+    if Cell.loaded then
+        if self.inRange ~= self.wasInRange then
+            if inRange then
+                A:FrameFadeIn(self, 0.25, self:GetAlpha(), 1)
+            else
+                A:FrameFadeOut(self, 0.25, self:GetAlpha(), styleTable["oorAlpha"] or 0.25)
+            end
+        end
+        self.wasInRange = inRange
     end
 end
 
@@ -421,7 +440,8 @@ local function QuickAssist_UpdateAll(self)
     QuickAssist_UpdateHealth(self)
     QuickAssist_UpdateHealthColor(self)
     QuickAssist_UpdateTarget(self)
-    QuickAssist_UpdateInRange(self, F:IsInRange(self.unit))
+    -- QuickAssist_UpdateInRange(self, F:IsInRange(self.unit))
+    QuickAssist_UpdateInRange_OnTick(self)
     QuickAssist_UpdateAuras(self)
 end
 
@@ -524,6 +544,8 @@ local function QuickAssist_OnTick(self)
 
     self.__tickCount = e
 
+    QuickAssist_UpdateInRange_OnTick(self)
+
     if self._updateRequired then
         self._updateRequired = nil
         QuickAssist_UpdateAll(self)
@@ -546,9 +568,11 @@ end
 
 local function QuickAssist_OnAttributeChanged(self, name, value)
     if name == "unit" then
-        self.unit = value
-        self:RegisterUnitEvent("UNIT_IN_RANGE_UPDATE", value)
-        ResetAuraTables(self)
+        if self.unit ~= value then
+            self.unit = value
+            -- self:RegisterUnitEvent("UNIT_IN_RANGE_UPDATE", value)
+            ResetAuraTables(self)
+        end
 
         if value then
             Cell.unitButtons.quickAssist.units[value] = self
@@ -1018,8 +1042,8 @@ local function UpdateQuickAssist(which)
     if not which or which == "filter" then
         local selectedFilter = groupType and quickAssistTable["filterAutoSwitch"][groupType] or 0
         
-        specFilter = nil
         EnableSpecFilter(false)
+        specFilter = nil
 
         if selectedFilter == 0 then -- hide
             header:SetAttribute("showRaid", false)
@@ -1076,9 +1100,9 @@ local function UpdateQuickAssist(which)
 
     if not which or which == "style" then
         for i = 1, 40 do
-            if header[i]:IsVisible() then
-                QuickAssist_UpdateInRange(header[i], F:IsInRange(header[i].unit))
-            end
+            -- if header[i]:IsVisible() then
+            --     QuickAssist_UpdateInRange(header[i], F:IsInRange(header[i].unit))
+            -- end
 
             -- color ----------------------------------------------------------------- --
             local tex = F:GetBarTextureByName(styleTable["texture"])
@@ -1195,6 +1219,7 @@ local function UpdateQuickAssist(which)
             -- font
             indicator:SetFont(unpack(bit["font"]))
             indicator:ShowDuration(bit["showDuration"])
+            indicator:ShowAnimation(bit["showAnimation"])
             indicator:ShowStack(bit["showStack"])
 
             -- bar
@@ -1241,6 +1266,7 @@ local function UpdateQuickAssist(which)
             -- font
             indicator:SetFont(unpack(oit["font"]))
             indicator:ShowDuration(oit["showDuration"])
+            indicator:ShowAnimation(oit["showAnimation"])
             indicator:ShowStack(oit["showStack"])
             
             -- glow

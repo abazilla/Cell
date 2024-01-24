@@ -229,7 +229,8 @@ local function PartyFrame_UpdateLayout(layout, which)
     if not which or which == "sort" then
         if layout["main"]["sortByRole"] then
             header:SetAttribute("sortMethod", "NAME")
-            header:SetAttribute("groupingOrder", layout["main"]["sortByRoleOrder"])
+            local order = table.concat(layout["main"]["roleOrder"], ",")..",NONE"
+            header:SetAttribute("groupingOrder", order)
             header:SetAttribute("groupBy", "ASSIGNEDROLE")
         else 
             header:SetAttribute("sortMethod", "INDEX")
@@ -250,7 +251,8 @@ local function PartyFrame_UpdateVisibility(which)
         if CellDB["general"]["showParty"] then
             --! [group] won't fire during combat
             -- RegisterAttributeDriver(partyFrame, "state-visibility", "[group:raid] hide; [group:party] show; hide")
-            RegisterAttributeDriver(partyFrame, "state-visibility", "[@raid1,exists] hide;[@party1,exists] show;hide")
+            -- NOTE: [group:party] show: fix for premade, only player in party, but party1 not exists
+            RegisterAttributeDriver(partyFrame, "state-visibility", "[@raid1,exists] hide;[@party1,exists] show;[group:party] show;hide")
         else
             UnregisterAttributeDriver(partyFrame, "state-visibility")
             partyFrame:Hide()

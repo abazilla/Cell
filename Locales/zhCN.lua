@@ -155,6 +155,7 @@ L["Enable Death Color"] = "启用死亡颜色"
 L["Power Color"] = "能量颜色"
 L["Power Color (dark)"] = "能量颜色 (暗)"
 L["Bar Animation"] = "条动画"
+L["Gradient Colors"] = "渐变色"
 L["Flash"] = "闪光"
 L["Smooth"] = "平滑"
 L["Target Highlight Color"] = "目标高亮颜色"
@@ -524,6 +525,7 @@ L["castByMe"] = "只显示我施放的增益"
 L["buffByMe"] = "只显示我能施放的增益"
 L["trackByName"] = "匹配法术名称"
 L["showDuration"] = "显示持续时间文本"
+L["showAnimation"] = "显示动画"
 L["showStack"] = "显示层数文本"
 -- L["Show duration text instead of icon animation"] = "用持续时间文本取代图标动画"
 L["enableHighlight"] = "高亮单位按钮"
@@ -533,6 +535,8 @@ L["Require font support"] = "需要字体支持"
 L["showTooltip"] = "显示鼠标提示"
 L["This will make these icons not click-through-able"] = "将会使这些图标无法点击穿透"
 L["Tooltips need to be enabled in General tab"] = "需要先启用常规页面中的鼠标提示功能"
+L["Added |T%d:0|t|cFFFF3030%s(%d)|r into debuff blacklist."] = "已将 |T%d:0|t|cFFFF3030%s(%d)|r 添加至减益黑名单。"
+L["enableBlacklistShortcut"] = "黑名单：Alt+Ctrl+RightClick"
 L["Only one threshold is displayed at a time"] = "同一时间只显示一个阈值"
 --[[Translation missing --]]
 -- L["Healer"] = "Healer"
@@ -811,6 +815,35 @@ L["Click to view older changelogs"] = "点击查看远古更新记录"
 L["CHANGELOGS"] = [[
     <h1>更新后如果有各种问题，先排查代码片段。</h1>
     <p>（正式服）如果指示器不能正常刷新，尝试启用常规页面下的“总是更新增益/减益”选项。</p>
+    <br/>
+
+    <h1>r219-release (Jan 24, 2024, 10:56 GMT+8)</h1>
+    <p>* 修复快速协助的距离检查（现在使用OnUpdate）。</p>
+    <p>+ 添加了自定义渐变色的选项（外观）。</p>
+    <br/>
+
+    <h1>r218-release (Jan 20, 2024, 18:49 GMT+8)</h1>
+    <p>* （怀旧服）修复一个布局相关的问题。</p>
+    <br/>
+
+    <h1>r217-release (Jan 18, 2024, 17:01 GMT+8)</h1>
+    <p>* 修复持续时间文本的可见性。</p>
+    <p>* 更新繁中。</p>
+    <br/>
+
+    <h1>r216-release (Jan 18, 2024, 12:31 GMT+8)</h1>
+    <p>* 修复外观界面中图标预览的问题。</p>
+    <p>* 修复快速协助的图标动画。</p>
+    <br/>
+
+    <h1>r215-release (Jan 18, 2024, 11:31 GMT+8)</h1>
+    <p>+ 为减益指示器添加了黑名单的快捷方式：Alt+Ctrl+右键（默认禁用）。</p>
+    <p>+ 为部分指示器添加了“显示动画”的选项。</p>
+    <p>+ （正式服）为坦克主动减伤指示器添加了“颜色”的选项。</p>
+    <p>* 更新小队职责顺序的选项（PR #102，感谢 abazilla）。</p>
+    <p>* （正式服）默认启用“总是更新减益”。</p>
+    <p>* 修复快速协助的专精过滤器。</p>
+    <p>* 修复预览模式的拖动按钮。</p>
     <br/>
 
     <h1>r214-release (Dec 30, 2023, 20:35 GMT+8)</h1>

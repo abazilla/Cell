@@ -1033,17 +1033,10 @@ local function CreateSetting_DurationVisibility(parent)
                 end,
             },
             {
-                ["text"] = L["Always"].." ("..L["hide icon animation"]..")",
+                ["text"] = L["Always"],
                 ["value"] = true,
                 ["onClick"] = function()
                     widget.func(true)
-                end,
-            },
-            {
-                ["text"] = L["Always"],
-                ["value"] = 0,
-                ["onClick"] = function()
-                    widget.func(0)
                 end,
             },
             {
@@ -2201,42 +2194,42 @@ local function CreateSetting_CustomColors(parent)
     return widget
 end
 
-local function CreateSetting_NameColor(parent)
+local function CreateSetting_ClassColor(parent)
     local widget
 
-    if not settingWidgets["nameColor"] then
-        widget = addon:CreateFrame("CellIndicatorSettings_NameColor", parent, 240, 50)
-        settingWidgets["nameColor"] = widget
+    if not settingWidgets["classColor"] then
+        widget = addon:CreateFrame("CellIndicatorSettings_ClassColor", parent, 240, 50)
+        settingWidgets["classColor"] = widget
 
-        widget.nameColorDropdown = addon:CreateDropdown(widget, 127)
-        widget.nameColorDropdown:SetPoint("TOPLEFT", 5, -20)
-        widget.nameColorDropdown:SetItems({
+        widget.colorDropdown = addon:CreateDropdown(widget, 127)
+        widget.colorDropdown:SetPoint("TOPLEFT", 5, -20)
+        widget.colorDropdown:SetItems({
             {
                 ["text"] = L["Class Color"],
                 ["value"] = "class_color",
                 ["onClick"] = function()
-                    widget.func({"class_color", widget.nameColorPicker:GetColor()})
-                    widget.nameColorPicker:SetEnabled(false)
+                    widget.func({"class_color", widget.colorPicker:GetColor()})
+                    widget.colorPicker:SetEnabled(false)
                 end,
             },
             {
                 ["text"] = L["Custom Color"],
-                ["value"] = "custom",
+                ["value"] = "custom_color",
                 ["onClick"] = function()
-                    widget.func({"custom", widget.nameColorPicker:GetColor()})
-                    widget.nameColorPicker:SetEnabled(true)
+                    widget.func({"custom_color", widget.colorPicker:GetColor()})
+                    widget.colorPicker:SetEnabled(true)
                 end,
             },
         })
 
-        local nameColorText = widget:CreateFontString(nil, "OVERLAY", "CELL_FONT_WIDGET")
-        nameColorText:SetPoint("BOTTOMLEFT", widget.nameColorDropdown, "TOPLEFT", 0, 1)
-        nameColorText:SetText(L["Name Color"])
+        local text = widget:CreateFontString(nil, "OVERLAY", "CELL_FONT_WIDGET")
+        text:SetPoint("BOTTOMLEFT", widget.colorDropdown, "TOPLEFT", 0, 1)
+        text:SetText(L["Color"])
 
-        widget.nameColorPicker = addon:CreateColorPicker(widget, "", false, function(r, g, b)
-            widget.func({widget.nameColorDropdown:GetSelected(), {r, g, b}})
+        widget.colorPicker = addon:CreateColorPicker(widget, "", false, function(r, g, b)
+            widget.func({widget.colorDropdown:GetSelected(), {r, g, b}})
         end)
-        widget.nameColorPicker:SetPoint("LEFT", widget.nameColorDropdown, "RIGHT", 5, 0)
+        widget.colorPicker:SetPoint("LEFT", widget.colorDropdown, "RIGHT", 5, 0)
 
         -- callback
         function widget:SetFunc(func)
@@ -2245,12 +2238,12 @@ local function CreateSetting_NameColor(parent)
         
         -- show db value
         function widget:SetDBValue(cTable)
-            widget.nameColorDropdown:SetSelectedValue(cTable[1])
-            widget.nameColorPicker:SetColor(cTable[2])
-            widget.nameColorPicker:SetEnabled(cTable[1] == "custom")
+            widget.colorDropdown:SetSelectedValue(cTable[1])
+            widget.colorPicker:SetColor(cTable[2])
+            widget.colorPicker:SetEnabled(cTable[1] == "custom_color")
         end
     else
-        widget = settingWidgets["nameColor"]
+        widget = settingWidgets["classColor"]
     end
 
     widget:Show()
@@ -2500,6 +2493,41 @@ local function CreateSetting_CheckButton3(parent)
         end
     else
         widget = settingWidgets["checkbutton3"]
+    end
+
+    widget:Show()
+    return widget
+end
+
+local function CreateSetting_CheckButton4(parent)
+    local widget
+
+    if not settingWidgets["checkbutton4"] then
+        widget = addon:CreateFrame("CellIndicatorSettings_CheckButton4", parent, 240, 30)
+        settingWidgets["checkbutton4"] = widget
+
+        widget.cb = addon:CreateCheckButton(widget, "checkbutton4")
+        widget.cb:SetPoint("TOPLEFT", 5, -8)
+
+        -- callback
+        function widget:SetFunc(func)
+            widget.cb.onClick = function(checked)
+                func(checked)
+            end
+        end
+
+        -- show db value
+        function widget:SetDBValue(settingName, checked, tooltip)
+            widget.cb:SetChecked(checked)
+            widget.cb:SetText(L[settingName])
+            if tooltip then
+                addon:SetTooltips(widget.cb, "ANCHOR_TOPLEFT", 0, 2, L[settingName], string.split("|", tooltip))
+            else
+                addon:ClearTooltips(widget.cb)
+            end
+        end
+    else
+        widget = settingWidgets["checkbutton4"]
     end
 
     widget:Show()
@@ -5058,10 +5086,12 @@ function addon:CreateIndicatorSettings(parent, settingsTable)
             tinsert(widgetsTable, CreateSetting_Colors(parent))
         elseif setting == "customColors" then
             tinsert(widgetsTable, CreateSetting_CustomColors(parent))
-        elseif setting == "nameColor" then
-            tinsert(widgetsTable, CreateSetting_NameColor(parent))
+        elseif setting == "color-class" then
+            tinsert(widgetsTable, CreateSetting_ClassColor(parent))
         elseif setting == "statusColors" then
             tinsert(widgetsTable, CreateSetting_StatusColors(parent))
+        elseif string.find(setting, "checkbutton4") then
+            tinsert(widgetsTable, CreateSetting_CheckButton4(parent))
         elseif string.find(setting, "checkbutton3") then
             tinsert(widgetsTable, CreateSetting_CheckButton3(parent))
         elseif string.find(setting, "checkbutton2") then
